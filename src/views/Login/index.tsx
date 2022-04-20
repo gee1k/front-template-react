@@ -2,7 +2,6 @@ import './index.less'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useState } from 'react'
-import { login as loginApi } from '@/api/auth'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/auth'
 import { useTranslation } from 'react-i18next'
@@ -25,8 +24,7 @@ export default function Login() {
     console.log('Success:', values)
     try {
       setLoading(true)
-      const ret = await loginApi(values)
-      login(ret.token, ret.expires_in)
+      await login(values)
       setLoading(false)
       navigate(from)
     } catch {

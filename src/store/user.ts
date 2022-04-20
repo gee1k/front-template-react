@@ -1,34 +1,23 @@
 import { getToken } from '@/utils/auth'
-import { atom, selector } from 'recoil'
+import { atom } from 'recoil'
 
-export const userState = atom<{ token: string | undefined; userInfo: ApiUser.UserInfo | undefined }>({
-  key: 'userState',
-  default: {
-    token: getToken(),
-    userInfo: undefined,
-  },
-})
+export enum UserInfoStatus {
+  Unloaded = 'unloaded',
+  Loaded = 'loaded',
+  Error = 'error',
+}
 
-export const userTokenState = selector<string | undefined>({
+export const userTokenState = atom<string | undefined>({
   key: 'userTokenState',
-  get: ({ get }) => get(userState).token,
-  set: ({ set }, newValue) =>
-    set(userState, (currentState) => {
-      return {
-        ...currentState,
-        token: newValue as string,
-      }
-    }),
+  default: getToken(),
 })
 
-export const userInfoState = selector<ApiUser.UserInfo | undefined>({
+export const userInfoState = atom<ApiUser.UserInfo | undefined>({
   key: 'userInfoState',
-  get: ({ get }) => get(userState).userInfo,
-  set: ({ set }, newValue) =>
-    set(userState, (currentState) => {
-      return {
-        ...currentState,
-        userInfo: newValue as ApiUser.UserInfo,
-      }
-    }),
+  default: undefined,
+})
+
+export const userInfoStatusState = atom<UserInfoStatus>({
+  key: 'userInfoStatusState',
+  default: UserInfoStatus.Unloaded,
 })

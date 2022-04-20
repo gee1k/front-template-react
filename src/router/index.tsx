@@ -6,16 +6,11 @@ import BasicLayout from '@/layouts/BasicLayout'
 import { useRoutes } from 'react-router-dom'
 import { RouterAuth } from '@/router/config'
 import { HomeOutlined } from '@ant-design/icons'
-import ProgressBar from '@/components/ProgressBar'
+import SpinWithProgress from '@/components/SpinWithProgress'
 
 function lazyLoad(Comp: React.LazyExoticComponent<() => JSX.Element>): React.ReactNode {
   return (
-    <Suspense
-      fallback={
-        <ProgressBar />
-        // <Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-      }
-    >
+    <Suspense fallback={<SpinWithProgress />}>
       <Comp />
     </Suspense>
   )
