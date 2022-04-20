@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { createStyleImportPlugin, AntdResolve } from 'vite-plugin-style-import'
 const path = require('path')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    createStyleImportPlugin({
+      resolves: [AntdResolve()],
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -15,6 +21,16 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,
+      },
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          moment: ['moment'],
+          antd: ['antd'],
+        },
       },
     },
   },
