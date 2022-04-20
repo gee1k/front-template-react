@@ -1,0 +1,21 @@
+{
+  "route": {
+    "home": "首页"
+  },
+  "nav": {
+    "fullscreen": "全屏",
+    "exitFullscreen": "退出全屏"
+  },
+  "login": {
+    "title": "管理系统",
+    "action": "登录",
+    "labels": {
+      "username": "用户名",
+      "password": "密码"
+    },
+    "errors": {
+      "requiredUsername": "请输入用户名!",
+      "requiredPassword": "请输入密码!"
+    }
+  }
+}
