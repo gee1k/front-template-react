@@ -3,6 +3,7 @@ import { RouteProps, routes } from '@/router'
 import { Link, matchRoutes, RouteMatch, useLocation } from 'react-router-dom'
 import { memo, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import settings from '@/settings'
 
 const INDEX_ROUTE_KEY = 'index'
 
@@ -76,7 +77,9 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
   const path = genPath(route, parentPath)
 
   const children = normalizeRoutes(route.children)
-  if (children.length > 1) {
+
+  const hasChildren = children.length > (settings.flatMenu ? 1 : 0)
+  if (hasChildren) {
     return (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -86,7 +89,7 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
         ))}
       </Menu.SubMenu>
     )
-  } else if (children.length === 1) {
+  } else if (settings.flatMenu && children.length === 1) {
     return <NavMenuItem route={children[0]} parentPath={path} />
   } else {
     return (
