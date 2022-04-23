@@ -31,7 +31,7 @@ export default function NavBar() {
     navigate('/login')
   }, [logout, navigate])
 
-  const isWide = useMedia(`(min-width: ${BREAKPOINT_WIDTH.XS})`)
+  const isWide = useMedia(`(min-width: ${BREAKPOINT_WIDTH.XS}px)`)
 
   const menu = (
     <Menu>

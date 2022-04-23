@@ -3,7 +3,8 @@ import { RouteProps, routes } from '@/router'
 import { Link, matchRoutes, RouteMatch, useLocation } from 'react-router-dom'
 import { memo, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import settings from '@/settings'
+import { useRecoilValue } from 'recoil'
+import { settingsState } from '@/store/app'
 
 const INDEX_ROUTE_KEY = 'index'
 
@@ -71,6 +72,7 @@ export const NavMenu = memo(() => {
 NavMenu.displayName = 'NavMenu'
 
 const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath?: string }) => {
+  const appSettings = useRecoilValue(settingsState)
   const { t } = useTranslation()
 
   const key = genKey(route, parentPath)
@@ -80,7 +82,7 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
 
   const children = normalizeRoutes(route.children)
 
-  const hasChildren = children.length > (settings.flatMenu ? 1 : 0)
+  const hasChildren = children.length > (appSettings.flatMenu ? 1 : 0)
   if (hasChildren) {
     return (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -91,7 +93,7 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
         ))}
       </Menu.SubMenu>
     )
-  } else if (settings.flatMenu && children.length === 1) {
+  } else if (appSettings.flatMenu && children.length === 1) {
     return <NavMenuItem route={children[0]} parentPath={path} />
   } else {
     return (

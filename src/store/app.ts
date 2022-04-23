@@ -1,11 +1,15 @@
 import { atom } from 'recoil'
-import settings from '@/settings'
 import i18n from '@/i18n'
 
 export const settingsState = atom({
   key: 'settingsState',
   default: {
-    collapsed: settings.collapsed,
+    title: '管理系统',
+    collapsed: false,
+    flatMenu: true,
+    breadcrumb: true,
+    footer: false,
+    copyright: 'Front Template ©2022 Created by Svend',
   },
 })
 

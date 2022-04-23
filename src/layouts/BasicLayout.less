@@ -29,11 +29,31 @@
   }
 }
 
+
 .basic-layout-sider {
   .logo {
-    background-color: gray;
     margin: 10px auto;
     width: 80%;
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 8px;
+    transition: all 0.2s;
+
+    .logo-img {
+      height: 38px;
+      width: auto;
+      transition: all 0.2s;
+    }
+
+    .logo-text  {
+      color: #FFF;
+      font-weight: bold;
+      font-size: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
   }
 }
