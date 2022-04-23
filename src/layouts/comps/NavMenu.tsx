@@ -76,6 +76,8 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
   const key = genKey(route, parentPath)
   const path = genPath(route, parentPath)
 
+  const title = route.meta?.title ? t(`route.${route.meta.title}`) : ''
+
   const children = normalizeRoutes(route.children)
 
   const hasChildren = children.length > (settings.flatMenu ? 1 : 0)
@@ -83,7 +85,7 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
     return (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      <Menu.SubMenu eventKey={key} title={route.meta?.title} icon={route.meta?.icon}>
+      <Menu.SubMenu eventKey={key} title={title} icon={route.meta?.icon}>
         {children.map((child) => (
           <NavMenuItem key={path + child.path} route={child} parentPath={path} />
         ))}
@@ -94,7 +96,7 @@ const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath
   } else {
     return (
       <Menu.Item eventKey={key} icon={route.meta?.icon}>
-        <Link to={path}>{route.meta?.title ? t(`route.${route.meta.title}`) : ''}</Link>
+        <Link to={path}>{title}</Link>
       </Menu.Item>
     )
   }
