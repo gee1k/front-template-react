@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/auth'
 import LangSelect from '@/components/LangSelect'
 import FullScreen from '@/components/Fullscreen'
+import { useMedia } from 'react-use'
+import { BREAKPOINT_WIDTH } from '@/constants/Media'
 
 export default function NavBar() {
   const [settings, setSettings] = useRecoilState(settingsState)
@@ -29,6 +31,8 @@ export default function NavBar() {
     navigate('/login')
   }, [logout, navigate])
 
+  const isWide = useMedia(`(min-width: ${BREAKPOINT_WIDTH.XS})`)
+
   const menu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>
@@ -49,8 +53,13 @@ export default function NavBar() {
       })}
 
       <div className="right-container">
-        <FullScreen />
-        <Divider type="vertical" />
+        {isWide ? (
+          <>
+            <FullScreen />
+            <Divider type="vertical" className="divider" />
+          </>
+        ) : null}
+
         <LangSelect />
         <Divider type="vertical" />
         <Dropdown overlay={menu} className="user-info">
