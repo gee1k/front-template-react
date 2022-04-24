@@ -1,6 +1,6 @@
 import './BasicLayout.less'
-import { Breadcrumb, Drawer, Layout } from 'antd'
-import { Link, matchRoutes, Outlet, useLocation } from 'react-router-dom'
+import { Drawer, Layout } from 'antd'
+import { matchRoutes, Outlet, useLocation } from 'react-router-dom'
 import { NavMenu } from '@/layouts/comps/NavMenu'
 import { RouteProps, routes } from '@/router'
 import NavBar from '@/layouts/comps/NavBar'
@@ -18,14 +18,18 @@ export default function BasicLayout() {
 
   const location = useLocation()
   const matchList = matchRoutes(routes, location) || []
-  const isHome = matchList[matchList.length - 1].pathname === '/'
+
+  const getRouteI18n = (key?: string) => {
+    if (!key) return ''
+    return t(`route.${key}`)
+  }
 
   let title = appSettings.title
   if (matchList.length) {
     const route = matchList[matchList.length - 1].route
     const subTitle = (route as RouteProps).meta?.title
     if (subTitle) {
-      title = `${t(`route.${subTitle}`)} - ${title}`
+      title = `${getRouteI18n(subTitle)} - ${title}`
     }
   }
   useTitle(title)
@@ -74,19 +78,7 @@ export default function BasicLayout() {
       <Layout className="basic-layout">
         <NavBar />
         <Layout.Content className="basic-layout-content-wrapper">
-          {!appSettings.breadcrumb || isHome ? null : (
-            <Breadcrumb className="basic-layout-breadcrumb">
-              <Breadcrumb.Item>
-                <Link to="/">首页</Link>
-              </Breadcrumb.Item>
-              {matchList.map((t) => {
-                return <Breadcrumb.Item key={t.pathname}>{(t.route as RouteProps).meta?.title}</Breadcrumb.Item>
-              })}
-            </Breadcrumb>
-          )}
-          <div className="basic-layout-content">
-            <Outlet />
-          </div>
+          <Outlet />
         </Layout.Content>
         {appSettings.footer ? (
           <Layout.Footer className="basic-layout-footer">{appSettings.copyright}</Layout.Footer>

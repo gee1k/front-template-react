@@ -63,7 +63,7 @@ export default function NavBar() {
         <LangSelect />
         <Divider type="vertical" />
         <Dropdown overlay={menu} className="user-info">
-          <Avatar src="https://joeschmoe.io/api/v1/random" />
+          <Avatar src="https://joeschmoe.io/api/v1/random" className="user-avatar" />
         </Dropdown>
       </div>
     </Layout.Header>

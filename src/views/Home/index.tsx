@@ -1,9 +1,12 @@
 import { DatePicker } from 'antd'
+import { PageContainer } from '@/components/PageContainer'
 
 export default function Home() {
   return (
-    <div>
-      <DatePicker />
-    </div>
+    <PageContainer showHeader={false}>
+      <div>
+        <DatePicker />
+      </div>
+    </PageContainer>
   )
 }
