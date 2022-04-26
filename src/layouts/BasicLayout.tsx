@@ -6,11 +6,11 @@ import { RouteProps, routes } from '@/router'
 import NavBar from '@/layouts/comps/NavBar'
 import { useRecoilState } from 'recoil'
 import { settingsState } from '@/store/app'
-import { useMedia, useTitle } from 'react-use'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { BREAKPOINT_WIDTH } from '@/constants/Media'
 import logoImg from '@/assets/logo.svg'
 import { useTranslation } from 'react-i18next'
+import { useResponsive, useTitle } from 'ahooks'
 
 export default function BasicLayout() {
   const [appSettings, setAppSettings] = useRecoilState(settingsState)
@@ -32,9 +32,12 @@ export default function BasicLayout() {
       title = `${getRouteI18n(subTitle)} - ${title}`
     }
   }
-  useTitle(title)
+  useTitle(title, { restoreOnUnmount: true })
 
-  const isWide = useMedia(`(min-width: ${BREAKPOINT_WIDTH.XS}px)`)
+  const responsive = useResponsive()
+  const isWide = useMemo(() => {
+    return responsive.XL
+  }, [responsive])
   useEffect(() => {
     setAppSettings((prev) => ({ ...prev, collapsed: !isWide }))
   }, [isWide, setAppSettings])

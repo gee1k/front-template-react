@@ -1,7 +1,7 @@
-import { Menu } from 'antd'
+import { Menu, MenuProps } from 'antd'
 import { RouteProps, routes } from '@/router'
 import { Link, matchRoutes, RouteMatch, useLocation } from 'react-router-dom'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRecoilValue } from 'recoil'
 import { settingsState } from '@/store/app'
@@ -28,6 +28,9 @@ function normalizeRoutes(routes?: RouteProps[]): RouteProps[] {
 }
 
 export const NavMenu = memo(() => {
+  const { t } = useTranslation()
+  const appSettings = useRecoilValue(settingsState)
+
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectKeys] = useState<string[]>([])
   const isMount = useRef(true)
@@ -52,7 +55,49 @@ export const NavMenu = memo(() => {
     setOpenKeys(openKeys)
   }
 
-  const menuRoutes = normalizeRoutes(routes)
+  const convertMenuItems = useCallback(
+    (routes: RouteProps[], parentPath?: string): MenuProps['items'] => {
+      return routes.map((route) => {
+        const key = genKey(route, parentPath)
+        const pathname = genPath(route, parentPath)
+
+        const title = route.meta?.title ? t(`route.${route.meta.title}`) : ''
+
+        const children = normalizeRoutes(route.children)
+        const hasChildren = children.length > (appSettings.flatMenu ? 1 : 0)
+        if (hasChildren) {
+          return {
+            key,
+            label: title,
+            icon: route.meta?.icon,
+            children: convertMenuItems(children, pathname),
+          }
+        } else if (children.length === 1) {
+          const child = children[0]
+          const childKey = genKey(child, pathname)
+          const childPathname = genPath(child, pathname)
+          const title = child.meta?.title ? t(`route.${child.meta.title}`) : ''
+
+          return {
+            key: childKey,
+            label: <Link to={childPathname}>{title}</Link>,
+            icon: child.meta?.icon,
+          }
+        } else {
+          return {
+            key,
+            label: <Link to={pathname}>{title}</Link>,
+            icon: route.meta?.icon,
+          }
+        }
+      })
+    },
+    [appSettings.flatMenu, t],
+  )
+
+  const menuItems = useMemo(() => {
+    return convertMenuItems(normalizeRoutes(routes))
+  }, [convertMenuItems])
 
   return (
     <Menu
@@ -62,45 +107,9 @@ export const NavMenu = memo(() => {
       openKeys={openKeys}
       selectedKeys={selectedKeys}
       onOpenChange={onOpenChange}
-    >
-      {menuRoutes.map((route) => (
-        <NavMenuItem key={route.path} route={route} />
-      ))}
-    </Menu>
+      inlineIndent={16}
+      items={menuItems}
+    ></Menu>
   )
 })
 NavMenu.displayName = 'NavMenu'
-
-const NavMenuItem = memo(({ route, parentPath }: { route: RouteProps; parentPath?: string }) => {
-  const appSettings = useRecoilValue(settingsState)
-  const { t } = useTranslation()
-
-  const key = genKey(route, parentPath)
-  const path = genPath(route, parentPath)
-
-  const title = route.meta?.title ? t(`route.${route.meta.title}`) : ''
-
-  const children = normalizeRoutes(route.children)
-
-  const hasChildren = children.length > (appSettings.flatMenu ? 1 : 0)
-  if (hasChildren) {
-    return (
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      <Menu.SubMenu eventKey={key} title={title} icon={route.meta?.icon}>
-        {children.map((child) => (
-          <NavMenuItem key={path + child.path} route={child} parentPath={path} />
-        ))}
-      </Menu.SubMenu>
-    )
-  } else if (appSettings.flatMenu && children.length === 1) {
-    return <NavMenuItem route={children[0]} parentPath={path} />
-  } else {
-    return (
-      <Menu.Item eventKey={key} icon={route.meta?.icon}>
-        <Link to={path}>{title}</Link>
-      </Menu.Item>
-    )
-  }
-})
-NavMenuItem.displayName = 'NavMenuItem'

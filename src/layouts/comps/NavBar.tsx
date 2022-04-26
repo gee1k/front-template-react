@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import './NavBar.less'
 import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Divider, Dropdown, Layout, Menu } from 'antd'
@@ -8,8 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/auth'
 import LangSelect from '@/components/LangSelect'
 import FullScreen from '@/components/Fullscreen'
-import { useMedia } from 'react-use'
-import { BREAKPOINT_WIDTH } from '@/constants/Media'
+import { useResponsive } from 'ahooks'
 
 export default function NavBar() {
   const [settings, setSettings] = useRecoilState(settingsState)
@@ -31,7 +30,10 @@ export default function NavBar() {
     navigate('/login')
   }, [logout, navigate])
 
-  const isWide = useMedia(`(min-width: ${BREAKPOINT_WIDTH.XS}px)`)
+  const responsive = useResponsive()
+  const isWide = useMemo(() => {
+    return responsive.XL
+  }, [responsive])
 
   const menu = (
     <Menu>
