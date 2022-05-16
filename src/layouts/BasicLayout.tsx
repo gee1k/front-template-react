@@ -1,92 +1,107 @@
 import './BasicLayout.less'
-import { Drawer, Layout } from 'antd'
-import { matchRoutes, Outlet, useLocation } from 'react-router-dom'
-import { NavMenu } from '@/layouts/comps/NavMenu'
+import ProLayout, { MenuDataItem, ProSettings, SettingDrawer } from '@ant-design/pro-layout'
+import { ReactDOM, useCallback, useMemo, useState } from 'react'
 import { RouteProps, routes } from '@/router'
-import NavBar from '@/layouts/comps/NavBar'
-import { useRecoilState } from 'recoil'
-import { settingsState } from '@/store/app'
-import { useEffect, useMemo } from 'react'
-import { BREAKPOINT_WIDTH } from '@/constants/Media'
-import logoImg from '@/assets/logo.svg'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useResponsive, useTitle } from 'ahooks'
+import { Route } from '@ant-design/pro-layout/lib/typings'
+import NavBar from '@/layouts/comps/NavBar'
+import defaultSettings from '@/defaultSettings'
+
+const flatMenu = true
+
+function genPath(route: RouteProps, parentPath?: string): string {
+  return [parentPath, route.index ? '' : route.path].join('/').replaceAll('//', '/')
+}
+
+function normalizeRoutes(routes?: RouteProps[]): RouteProps[] {
+  return routes?.filter((route) => !route.hidden) || []
+}
 
 export default function BasicLayout() {
-  const [appSettings, setAppSettings] = useRecoilState(settingsState)
   const { t } = useTranslation()
+  const [settings, setSetting] = useState<Partial<ProSettings> | undefined>(defaultSettings)
 
   const location = useLocation()
-  const matchList = matchRoutes(routes, location) || []
+  const navigate = useNavigate()
 
-  const getRouteI18n = (key?: string) => {
-    if (!key) return ''
-    return t(`route.${key}`)
-  }
+  const convertMenuItems = useCallback(
+    (routes: RouteProps[], parentPath?: string): Route[] => {
+      return routes.map((route) => {
+        const pathname = genPath(route, parentPath)
 
-  let title = appSettings.title
-  if (matchList.length) {
-    const route = matchList[matchList.length - 1].route
-    const subTitle = (route as RouteProps).meta?.title
-    if (subTitle) {
-      title = `${getRouteI18n(subTitle)} - ${title}`
-    }
-  }
-  useTitle(title, { restoreOnUnmount: true })
+        const title = route.meta?.title ? t(`route.${route.meta.title}`) : ''
 
-  const responsive = useResponsive()
-  const isWide = useMemo(() => {
-    return responsive.XL
-  }, [responsive])
-  useEffect(() => {
-    setAppSettings((prev) => ({ ...prev, collapsed: !isWide }))
-  }, [isWide, setAppSettings])
+        const children = normalizeRoutes(route.children)
+        const hasChildren = children.length > (flatMenu ? 1 : 0)
+        if (hasChildren) {
+          return {
+            path: pathname,
+            name: title,
+            icon: route.meta?.icon,
+            routes: convertMenuItems(children, pathname),
+          }
+        } else if (children.length === 1) {
+          const child = children[0]
+          const childPathname = genPath(child, pathname)
+          const title = child.meta?.title ? t(`route.${child.meta.title}`) : ''
 
-  const onCloseDrawer = () => {
-    setAppSettings({ ...appSettings, collapsed: true })
-  }
-
-  const sidebar = (
-    <Layout.Sider
-      trigger={null}
-      collapsible
-      collapsed={isWide ? appSettings.collapsed : false}
-      className="basic-layout-sider"
-    >
-      <div className="logo">
-        <img src={logoImg} alt="" className="logo-img" />
-        {appSettings.collapsed ? null : <span className="logo-text">{appSettings.title}</span>}
-      </div>
-      <NavMenu />
-    </Layout.Sider>
+          return {
+            path: childPathname,
+            name: title,
+            icon: child.meta?.icon,
+          }
+        } else {
+          return {
+            path: pathname,
+            name: title,
+            icon: route.meta?.icon,
+          }
+        }
+      })
+    },
+    [t],
   )
 
-  return (
-    <Layout className="basic-layout-container">
-      {isWide ? (
-        sidebar
-      ) : (
-        <Drawer
-          visible={!appSettings.collapsed}
-          onClose={onCloseDrawer}
-          placement="left"
-          closable={false}
-          bodyStyle={{ padding: 0, display: 'flex' }}
-          contentWrapperStyle={{ width: 'initial' }}
-        >
-          {sidebar}
-        </Drawer>
-      )}
+  const menuItems = useMemo(() => {
+    return convertMenuItems(normalizeRoutes(routes))
+  }, [convertMenuItems])
 
-      <Layout className="basic-layout">
-        <NavBar />
-        <Layout.Content className="basic-layout-content-wrapper">
-          <Outlet />
-        </Layout.Content>
-        {appSettings.footer ? (
-          <Layout.Footer className="basic-layout-footer">{appSettings.copyright}</Layout.Footer>
-        ) : null}
-      </Layout>
-    </Layout>
+  return (
+    <div className="basic-layout-container">
+      <ProLayout
+        route={{
+          path: '/',
+          routes: menuItems,
+        }}
+        location={{
+          pathname: location.pathname,
+        }}
+        menuItemRender={(item: MenuDataItem & { isUrl: boolean; onClick?: () => void }, dom: ReactDOM) => (
+          <a
+            onClick={() => {
+              navigate(item.path || '/')
+            }}
+          >
+            {dom}
+          </a>
+        )}
+        rightContentRender={() => <NavBar></NavBar>}
+        logo={false}
+        title={defaultSettings.title}
+        {...settings}
+      >
+        <Outlet />
+      </ProLayout>
+      <SettingDrawer
+        pathname={location.pathname}
+        enableDarkTheme
+        settings={settings}
+        onSettingChange={(changeSetting) => {
+          setSetting(changeSetting)
+        }}
+        disableUrlParams={false}
+      />
+    </div>
   )
 }

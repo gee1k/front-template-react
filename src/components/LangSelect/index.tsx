@@ -11,15 +11,13 @@ export default function LangSelect() {
     setLanguage(key)
   }
   const menu = (
-    <Menu onClick={onClick}>
-      <Menu.Item key="zh" disabled={language === 'zh'}>
-        <span>中文</span>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="en" disabled={language === 'en'}>
-        <span>English</span>
-      </Menu.Item>
-    </Menu>
+    <Menu
+      onClick={onClick}
+      items={[
+        { key: 'zh', label: '中文', disabled: language === 'zh' },
+        { key: 'en', label: 'English', disabled: language === 'en' },
+      ]}
+    ></Menu>
   )
 
   return (

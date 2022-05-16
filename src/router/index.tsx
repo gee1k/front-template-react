@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import type { RouteObject } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import Error404 from '@/views/Error/Error404'
 import Login from '@/views/Login'
 import BasicLayout from '@/layouts/BasicLayout'
-import { useRoutes } from 'react-router-dom'
 import { RouterAuth } from '@/router/config'
 import { HomeOutlined } from '@ant-design/icons'
 import SpinWithProgress from '@/components/SpinWithProgress'
@@ -46,9 +46,15 @@ export const routes: RouteProps[] = [
   {
     path: '/test',
     element: <BasicLayout />,
+    meta: { title: 'home', auth: true, icon: <HomeOutlined /> },
     children: [
       {
         index: true,
+        element: lazyLoad(React.lazy(() => import('@/views/Home'))),
+        meta: { title: 'home', auth: true, icon: <HomeOutlined /> },
+      },
+      {
+        path: 'dfada',
         element: lazyLoad(React.lazy(() => import('@/views/Home'))),
         meta: { title: 'home', auth: true, icon: <HomeOutlined /> },
       },

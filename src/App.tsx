@@ -8,6 +8,7 @@ import { languageState } from '@/store/app'
 import { useEffect } from 'react'
 import i18n from './i18n'
 import { Locale } from 'antd/es/locale-provider'
+import 'antd/dist/antd.variable.min.css'
 
 import zhCN from 'antd/lib/locale/zh_CN'
 import enUS from 'antd/lib/locale/en_US'
