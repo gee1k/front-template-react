@@ -1,0 +1,21 @@
+{
+  "route": {
+    "home": "Home"
+  },
+  "nav": {
+    "fullscreen": "Full Screen",
+    "exitFullscreen": "Exit full screen"
+  },
+  "login": {
+    "title": "Management System",
+    "action": "Login",
+    "labels": {
+      "username": "Username",
+      "password": "Password"
+    },
+    "errors": {
+      "requiredUsername": "Please enter your username",
+      "requiredPassword": "Please enter your password"
+    }
+  }
+}
