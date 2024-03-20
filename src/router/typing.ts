@@ -1,11 +1,18 @@
-import type { RouteObject } from 'react-router'
+import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 
-export type AppRouteProps = RouteObject & {
-  children?: AppRouteProps[]
+export type AppRouteProps = {
   meta?: {
-    auth?: boolean
     title?: string
     icon?: JSX.Element
   }
   hidden?: boolean
 }
+
+type IndexAppRouteObject = IndexRouteObject & AppRouteProps
+
+type NonIndexAppRouteObject = NonIndexRouteObject &
+  AppRouteProps & {
+    children?: AppRouteObject[]
+  }
+
+export type AppRouteObject = IndexAppRouteObject | NonIndexAppRouteObject

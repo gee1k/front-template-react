@@ -1,6 +1,19 @@
 {
+  "common": {
+    "confirmation": "Confirmation",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "close": "Close",
+    "ok": "OK",
+    "loading": "Loading...",
+    "noData": "No data"
+  },
   "route": {
-    "home": "Home"
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "dataManagement": "Data Management",
+    "user": "User",
+    "role": "Role"
   },
   "nav": {
     "fullscreen": "Full Screen",
@@ -17,5 +30,10 @@
       "requiredUsername": "Please enter your username",
       "requiredPassword": "Please enter your password"
     }
+  },
+  "logout": {
+    "title": "Log out",
+    "action": "Log out",
+    "message": "Are you sure you want to log out?"
   }
 }

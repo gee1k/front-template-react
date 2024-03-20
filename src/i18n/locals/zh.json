@@ -1,6 +1,23 @@
 {
+  "common": {
+    "confirmation": "确认",
+    "confirm": "确定",
+    "cancel": "取消",
+    "close": "关闭",
+    "ok": "确定",
+    "loading": "加载中...",
+    "noData": "暂无数据"
+  },
+  "language": {
+    "zh": "中文",
+    "en": "English"
+  },
   "route": {
-    "home": "首页"
+    "home": "首页",
+    "dashboard": "仪表盘",
+    "dataManagement": "数据管理",
+    "user": "用户",
+    "role": "角色"
   },
   "nav": {
     "fullscreen": "全屏",
@@ -17,5 +34,8 @@
       "requiredUsername": "请输入用户名!",
       "requiredPassword": "请输入密码!"
     }
+  },
+  "logout": {
+    "message": "确定要退出系统吗?"
   }
 }

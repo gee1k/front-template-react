@@ -1,58 +1,36 @@
-import { memo, useEffect } from 'react'
-import { matchRoutes, Navigate, useLocation } from 'react-router-dom'
-import { AppRouteProps } from './typing'
-import { useUserStore } from '@/store/user'
 import SpinWithProgress from '@/components/SpinWithProgress'
-import { routes } from './config'
+import { useUserStore } from '@/store/user'
+import { useEffect } from 'react'
+import { Navigate, useLocation } from 'react-router-dom'
 
-const RouterLoader = memo(({ children }: { children: JSX.Element | null }) => {
+interface AuthGuardProps {
+  children: React.ReactNode
+}
+
+export function AuthGuard({ children }: AuthGuardProps) {
   const location = useLocation()
+
   const token = useUserStore((state) => state.token)
   const user = useUserStore((state) => state.user)
-
   const getInfo = useUserStore((state) => state.getInfo)
 
   useEffect(() => {
-    const loadUserInfoFunc = async () => {
-      if (token && !user) {
-        await getInfo()
-      }
+    if (!user && token) {
+      getInfo()
     }
-    loadUserInfoFunc()
   }, [token, user, getInfo])
 
-  return token ? (
-    user ? (
-      <>{children}</>
-    ) : (
-      <SpinWithProgress />
-    )
-  ) : (
-    <Navigate to="/login" state={{ from: location.pathname }} replace />
-  )
-})
-RouterLoader.displayName = 'RouterLoader'
-
-export const AuthGuard = memo(({ children }: { children: JSX.Element | null }) => {
-  const token = useUserStore((state) => state.token)
-  const location = useLocation()
-  // 匹配当前层级路由树
-  const matchList = matchRoutes(routes, location)
-
-  const isNeedLogin = matchList?.some((item) => {
-    const route: AppRouteProps = item.route
-    return route.meta?.auth
-  })
-
-  if (!isNeedLogin) {
-    return <>{children}</>
-  }
-
+  // 判断用户是否有权限
   if (!token) {
-    console.log('需要登录,或者获取用户信息失败')
+    // 如果没有授权，则跳转到登录页面
     return <Navigate to="/login" state={{ from: location.pathname }} replace />
   }
 
-  return <RouterLoader>{children}</RouterLoader>
-})
-AuthGuard.displayName = 'RouterAuth'
+  // 如果没有用户信息，则需要获取用户信息
+  if (!user) {
+    return <SpinWithProgress />
+  }
+
+  // 如果已经授权，则直接渲染子组件
+  return <>{children}</>
+}

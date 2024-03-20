@@ -1,12 +1,16 @@
-import { HashRouter } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
+import { CssVarsProvider } from '@mui/joy/styles'
+import CssBaseline from '@mui/joy/CssBaseline'
+
 import './App.css'
-import AppRouterRoot from './router'
 
 function App() {
   return (
-    <HashRouter>
-      <AppRouterRoot />
-    </HashRouter>
+    <CssVarsProvider>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </CssVarsProvider>
   )
 }
 
