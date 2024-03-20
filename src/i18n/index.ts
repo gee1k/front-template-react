@@ -2,8 +2,8 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
-import enTranslation from './locals/en.json'
-import zhTranslation from './locals/zh.json'
+import enTranslation from './locales/en.json'
+import zhTranslation from './locales/zh.json'
 
 export const supportedLanguages = ['en', 'zh'] as const
 export type SupportedLanguage = (typeof supportedLanguages)[number]
