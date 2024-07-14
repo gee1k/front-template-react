@@ -34,7 +34,7 @@ dependencies:
     version: 1.7.2
   i18next:
     specifier: ^23.10.1
-    version: 23.11.5
+    version: 23.12.0
   i18next-browser-languagedetector:
     specifier: ^8.0.0
     version: 8.0.0
@@ -55,7 +55,7 @@ dependencies:
     version: 7.52.1(react@18.3.1)
   react-i18next:
     specifier: ^14.1.0
-    version: 14.1.2(i18next@23.11.5)(react-dom@18.3.1)(react@18.3.1)
+    version: 14.1.2(i18next@23.12.0)(react-dom@18.3.1)(react@18.3.1)
   react-router:
     specifier: ^6.22.3
     version: 6.24.1(react@18.3.1)
@@ -214,7 +214,7 @@ packages:
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
     dependencies:
       '@babel/helper-module-imports': 7.24.3
-      '@babel/runtime': 7.24.7
+      '@babel/runtime': 7.24.0
       '@emotion/hash': 0.9.1
       '@emotion/memoize': 0.8.1
       '@emotion/serialize': 1.1.4
@@ -1627,7 +1627,7 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
     dependencies:
-      '@babel/runtime': 7.24.7
+      '@babel/runtime': 7.24.0
       cosmiconfig: 7.1.0
       resolve: 1.22.8
     dev: false
@@ -2267,10 +2267,10 @@ packages:
       '@babel/runtime': 7.24.5
     dev: false
 
-  /i18next@23.11.5:
-    resolution: {integrity: sha512-41pvpVbW9rhZPk5xjCX2TPJi2861LEig/YRhUkY+1FQ2IQPS0bKUDYnEqY8XPPbB48h1uIwLnP9iiEfuSl20CA==}
+  /i18next@23.12.0:
+    resolution: {integrity: sha512-aEoMCs1wDYeBhG5uv1vavhVX/IXbp/unxBqME+H3Zxxe62JyB/IUcNkciQsC4klnb/B1hnoPCEY6zCM/0xDwZg==}
     dependencies:
-      '@babel/runtime': 7.24.5
+      '@babel/runtime': 7.24.8
     dev: false
 
   /ignore@5.3.1:
@@ -2765,7 +2765,7 @@ packages:
       react: 18.3.1
     dev: false
 
-  /react-i18next@14.1.2(i18next@23.11.5)(react-dom@18.3.1)(react@18.3.1):
+  /react-i18next@14.1.2(i18next@23.12.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-FSIcJy6oauJbGEXfhUgVeLzvWBhIBIS+/9c6Lj4niwKZyGaGb4V4vUbATXSlsHJDXXB+ociNxqFNiFuV1gmoqg==}
     peerDependencies:
       i18next: '>= 23.2.3'
@@ -2780,7 +2780,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.5
       html-parse-stringify: 3.0.1
-      i18next: 23.11.5
+      i18next: 23.12.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: false
