@@ -19,7 +19,7 @@ importers:
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.3.24)(react@18.3.1))(@types/react@18.3.24)(react@18.3.1)
       '@fontsource/inter':
         specifier: ^5.0.17
-        version: 5.2.7
+        version: 5.2.8
       '@mui/icons-material':
         specifier: ^5.15.13
         version: 5.18.0(@mui/joy@5.0.0-beta.31(@emotion/react@11.14.0(@types/react@18.3.24)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.24)(react@18.3.1))(@types/react@18.3.24)(react@18.3.1))(@types/react@18.3.24)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.24)(react@18.3.1)
@@ -409,8 +409,8 @@ packages:
   '@floating-ui/utils@0.2.1':
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
 
-  '@fontsource/inter@5.2.7':
-    resolution: {integrity: sha512-sfE4VQglV9B05DuJ+RD2RHY42FiVTdCf/dJtVkugRVkygoDigLM4SuNcBrCeo+zoGiC/IudmVcE6QKqW7S1Gkg==}
+  '@fontsource/inter@5.2.8':
+    resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -2308,7 +2308,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.1': {}
 
-  '@fontsource/inter@5.2.7': {}
+  '@fontsource/inter@5.2.8': {}
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
